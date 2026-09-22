@@ -1,0 +1,71 @@
+{
+  "manifest_version": "0.2",
+  "name": "meritz-open-api-codegen",
+  "display_name": "메리츠증권 Open API — 코드 생성",
+  "version": "0.3.6",
+  "description": "메리츠증권 Open API 를 호출하는 파이썬 코드를 생성합니다.",
+  "long_description": "API 를 자연어로 검색하고, 파라미터와 코드값을 확인하고, REST·실시간(웹소켓) 호출 코드를 생성합니다. 이 서버는 API 를 호출하지 않고 네트워크로 나가지 않습니다. 앱키가 필요 없습니다.",
+  "author": {
+    "name": "메리츠증권"
+  },
+  "homepage": "https://github.com/meritz-securities/open-api-codegen-mcp",
+  "documentation": "https://github.com/meritz-securities/open-api-codegen-mcp#readme",
+  "license": "MIT",
+  "keywords": [
+    "meritz",
+    "open-api",
+    "trading",
+    "codegen",
+    "korea"
+  ],
+  "server": {
+    "type": "python",
+    "entry_point": "meritz_codegen/server.py",
+    "mcp_config": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "${__dirname}",
+        "meritz-codegen-mcp"
+      ],
+      "env": {}
+    }
+  },
+  "tools": [
+    {
+      "name": "list_categories",
+      "description": "분류와 API 개수"
+    },
+    {
+      "name": "search_api",
+      "description": "자연어로 API 찾기"
+    },
+    {
+      "name": "get_api_detail",
+      "description": "경로·파라미터·응답 필드·주의사항"
+    },
+    {
+      "name": "generate_code",
+      "description": "호출 코드 생성 (REST·실시간)"
+    },
+    {
+      "name": "api_conventions",
+      "description": "인증·호출 규약·응답 코드"
+    }
+  ],
+  "prompts": [
+    {
+      "name": "meritz_code_prompt",
+      "description": "작업 설명만 넣으면 검색→상세→코드 생성 흐름을 안내합니다.",
+      "arguments": [
+        "task"
+      ],
+      "text": "메리츠 Open API 로 다음을 하려 합니다: ${arguments.task}\n\n아래 순서로 진행해 주세요.\n1. api_conventions() 로 인증·호출 규약과 알려진 문제를 확인합니다.\n2. search_api() 로 알맞은 API 를 찾습니다. api_type 을 짐작하지 마세요.\n3. get_api_detail(api_type) 로 파라미터를 확인합니다.\n4. generate_code(api_type) 로 코드를 받습니다.\n\n종목코드 표기 — 국내 시세는 6자리(005930), 국내 주문은 A+6자리(A005930),\n해외는 대문자 심볼(AAPL), 해외 실시간은 <거래소>@<종목>(OQ@NVDA).\n\n주의 — 결과가 주문·환전 API 라면 실제로 체결될 수 있습니다. 생성 코드는\nconfirm=True 전까지 보내지 않으니, 먼저 내용을 확인하고 사용자에게 알린 뒤\n진행하세요."
+    }
+  ],
+  "compatibility": {
+    "runtimes": {
+      "python": ">=3.11"
+    }
+  }
+}

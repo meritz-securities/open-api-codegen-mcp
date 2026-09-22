@@ -1,0 +1,37 @@
+[project]
+name = "meritz-open-api-codegen-mcp"
+version = "0.3.6"
+description = "메리츠증권 Open API 코드 어시스턴트 MCP (검색·코드생성)"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Meritz Securities Co., Ltd." }]
+dependencies = ["fastmcp>=2.0.0"]
+
+
+[project.scripts]
+meritz-codegen-mcp = "meritz_codegen.server:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["meritz_codegen"]
+
+[project.optional-dependencies]
+# 생성된 코드를 실행해 검증하므로 그 코드의 의존성도 필요하다
+dev = ["pytest>=8.0", "requests>=2.31.0"]
+
+[dependency-groups]
+dev = ["pytest>=8.0", "requests>=2.31.0"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = [
+    "E501",    # 줄 길이는 line-length 로 본다
+    "UP031",   # 코드 템플릿에서 % 포맷을 쓴다. f-string 으로 바꾸면 생성물의 중괄호와 섞인다
+]
